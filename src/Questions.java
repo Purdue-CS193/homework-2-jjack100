@@ -22,25 +22,46 @@ public class Questions {
     // Task 1
     public static int findMax(int[] input) {
         // find the max in the input array
-        return Arrays.stream(input).max().getAsInt();
+        int max = Integer.MIN_VALUE;
+        for (int i = 0; i < input.length; i++) {
+            if (input[i] > max) {
+                max = input[i];
+            }
+        }
+        return max;
     }
 
     // Task 2
     public static int findMin(int[] input) {
         // find the smallest element in the array
-        return Arrays.stream(input).min().getAsInt();
+        int min = Integer.MAX_VALUE;
+        for (int i = 0; i < input.length; i++) {
+            if (input[i] < min) {
+                min = input[i];
+            }
+        }
+        return min;
     }
 
     // Task 3
     public static int findSum(int[] input) {
         // find the sum of all the elements in the array
-        return Arrays.stream(input).sum();
+        int sum = 0;
+        for (int i = 0; i < input.length; i++) {
+            sum += input[i];
+        }
+        return sum;
     }
 
     // Task 4
     public static int findAverage(int[] input) {
         // find the average of the input
-        return (int) Arrays.stream(input).average().getAsDouble();
+        int sum = 0;
+        for (int i = 0; i < input.length; i++) {
+            sum = input[i] + sum;
+        }
+        int average = sum / (input.length);
+        return average;
     }
 
     // Task 5

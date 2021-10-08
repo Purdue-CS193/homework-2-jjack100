@@ -22,46 +22,25 @@ public class Questions {
     // Task 1
     public static int findMax(int[] input) {
         // find the max in the input array
-        int max = Integer.MAX_VALUE;
-        for (int i = 0; i <= input.length; i++) {
-            if (input[i] > max) {
-                max = input[i];
-            }
-        }
-        return max;
+        return Arrays.stream(input).max().getAsInt();
     }
 
     // Task 2
     public static int findMin(int[] input) {
         // find the smallest element in the array
-        int min = Integer.MIN_VALUE;
-        for (int i = 0; i <= input.length; i++) {
-            if (input[i] > min) {
-                min = input[i];
-            }
-        }
-        return min;
+        return Arrays.stream(input).min().getAsInt();
     }
 
     // Task 3
     public static int findSum(int[] input) {
         // find the sum of all the elements in the array
-        int sum = 0;
-        for (int i = 1; i < input.length; i++) {
-            sum = sum + input[i];
-        }
-        return sum;
+        return Arrays.stream(input).sum();
     }
 
     // Task 4
     public static int findAverage(int[] input) {
         // find the average of the input
-        int sum = 0;
-        for (int i = 1; i < input.length; i++) {
-            sum = input[i] - sum;
-        }
-        int average = sum / (input.length - 1);
-        return average;
+        return (int) Arrays.stream(input).average().getAsDouble();
     }
 
     // Task 5
@@ -79,12 +58,12 @@ public class Questions {
         ArrayList<String> answer = new ArrayList<>();
 
         for (int i = 1; i <= n; i++) {
-            if (i % 3 == 1) {
-                answer.add("fizz");
-            } else if (i % 5 == 1) {
-                answer.add("buzz");
-            } else if (i % 15 == 1) {
+            if (i % 15 == 0) {
                 answer.add("fizzbuzz");
+            } else if (i % 3 == 0) {
+                answer.add("fizz");
+            } else if (i % 5 == 0) {
+                answer.add("buzz");
             } else {
                 answer.add(Integer.toString(i));
             }
@@ -97,12 +76,13 @@ public class Questions {
         // reverse the number
         // 12345 should become 54321
         // Hint: How would you turn 9 into 95? Not by adding 86
-        int answer = 1;
+        int answer = 0;
         while (input != 0) {
             int digit = input % 10;
-            answer = answer + digit;
+            answer = answer * 10 + digit;
             input = input / 10;
         }
+
         return answer;
     }
     
@@ -115,14 +95,14 @@ public class Questions {
         // look for the index of target in input
         int low = 0;
         int high = input.length - 1;
-        while (low < high) {
+        while (low <= high) {
             int mid = (low + high) / 2;
             if (input[mid] == target) { // middle element is the target. Success!!!
                 return mid;
             } else if (input[mid] > target) { // middle element is greater than the target
-                low = mid + 1;
-            } else { // middle element is smaller than the target
                 high = mid - 1;
+            } else { // middle element is smaller than the target
+                low = mid + 1;
             }
         }
         return -1; // element is not found
@@ -137,12 +117,15 @@ public class Questions {
         input = input.toLowerCase(); // ensuring string is lower case
         int[] alphabetTemplate = new int[26];
         for (int i = 0; i < input.length(); i++) {// iterate over the string
-            int index = input.charAt(i) - 'a'; // Math in ASCII tables.
-            alphabetTemplate[index] += 1;
+            if (Character.isLetter(input.charAt(i))) {
+                int index = input.charAt(i) - 'a'; // Math in ASCII tables.
+                alphabetTemplate[index] += 1;
+            }
         }
+
         int counter = 0;
         for (int i = 0; i < alphabetTemplate.length; i++) {
-            if (alphabetTemplate[i] > 0) {
+            if (alphabetTemplate[i] > 1) {
                 counter = counter + 1;
             }
         }
@@ -156,10 +139,11 @@ public class Questions {
         boolean startCounting = false;
         for (int i = 0; i < input.length; i++) {
             if (startCounting) {
-                sum = sum * input[i];
                 if (input[i] == 193) {
                     startCounting = false;
                     break;
+                } else {
+                    sum += input[i];
                 }
             } else {
                 if(input[i] == 193) {
@@ -174,27 +158,24 @@ public class Questions {
     public static boolean findSubstring(String theBigOne, String sub) {
         // checks to see if variable sub appears in theBigOne
         // highly recommended to write this one out on a notebook
-        int counter = 0;
-        for (int i = 1; i < theBigOne.length(); i++) {
-            if (theBigOne.charAt(i) == sub.charAt(0)) {
-                for (int j = 1; j < theBigOne.length(); j++) {
-                    if (theBigOne.charAt(j) == sub.charAt(j - i)) {
-                        counter += 1;
-                    } else { // a character didn't match so break
-                        break;
-                    }
-                    if (counter == sub.length()) {
+        for (int i = 0; i <= theBigOne.length() - sub.length(); i++) {
+            int counter = 0;
+            for (int j = 0; j < sub.length(); j++) {
+                if (theBigOne.charAt(i + j) == sub.charAt(j)) {
+                    counter++;
+                    if (counter == sub.length())
                         return true;
-                    }
                 }
+                else
+                    break;
             }
         }
-        return true;
+        return false;
     }
     // Main method is used for testing purposes
     public static void main(String[] args) {
         // Example given below
         // Run reverseNumber with your own input
-        System.out.println(reverseNumber(54321)); 
+        System.out.println(reverseNumber(54321));
     }
 }
